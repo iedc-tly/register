@@ -701,10 +701,10 @@
                 <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; gap:6px;">
                   <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
                     <span class="pill-badge badge-info" style="font-size:0.75rem;">${escapeHtml(f.category || (isAtt ? 'Session Attendance' : 'Campus Event'))}</span>
-                    ${isAtt ? '<span class="pill-badge" style="background:#fef3c7; color:#92400e; font-size:0.75rem;">📋 Attendance</span>' : `<span class="pill-badge ${isPaid ? 'badge-paid' : 'badge-free'}" style="font-size:0.75rem;">${escapeHtml(isPaid ? (f.fee || 'Paid') : '₹0 (Free Entry)')}</span>`}
+                    ${isAtt ? '<span class="pill-badge" style="background:#fef3c7; color:#92400e">' : `<span class="pill-badge ${isPaid ? 'badge-paid' : 'badge-free'}" style="font-size:0.75rem;">${escapeHtml(isPaid ? (f.fee || 'Paid') : '₹0 (Free Entry)')}</span>`}
                   </div>
                   <span style="font-size:0.75rem; color:${hasWebhook ? '#10b981' : '#f59e0b'}; font-weight:700;">
-                    ${hasWebhook ? '● Sheets' : '○ Offline'}
+                    ${hasWebhook ? 'Sheets' : '○ Offline'}
                   </span>
                 </div>
                 <h3 style="font-size:1.15rem; font-weight:800; color:var(--text-main); margin-bottom:6px;">
