@@ -127,27 +127,72 @@
               1. Event Information & Google Sheets Link
             </h3>
 
-            <!-- Event Pricing Model Toggle Bar -->
-            <div class="pricing-toggle-container">
-              <div class="pricing-toggle-label">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v12M8 10h8M8 14h6"></path></svg>
-                <span>Event Pricing Model:</span>
+            <!-- Form Type / Purpose Selector -->
+            <div style="background:#f8fafc; border:1px solid #cbd5e1; border-radius:8px; padding:14px; margin-bottom:18px;">
+              <div style="font-size:0.85rem; font-weight:700; color:var(--text-main); margin-bottom:8px; display:flex; align-items:center; gap:8px;">
+                <span>📋 Form Type / Purpose:</span>
               </div>
-              <div class="segmented-control" id="pricingTypeToggle">
-                <button type="button" class="segment-btn active" data-pricing="free" id="btnPricingFree">
-                  <span>🟢 Free Event</span>
-                </button>
-                <button type="button" class="segment-btn" data-pricing="paid" id="btnPricingPaid">
-                  <span>💳 Paid Event</span>
-                </button>
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                <label id="labelFormTypeReg" style="display:flex; align-items:flex-start; gap:10px; padding:12px; border:2px solid var(--primary); background:#eef2ff; border-radius:8px; cursor:pointer;">
+                  <input type="radio" name="builderFormType" id="radioTypeRegistration" value="registration" checked style="margin-top:3px;">
+                  <div>
+                    <div style="font-weight:700; font-size:0.9rem; color:var(--text-main);">🎟️ Registration Form</div>
+                    <div style="font-size:0.78rem; color:var(--text-muted); margin-top:2px;">Standard event pass with ticket, entry QR, and optional fee.</div>
+                  </div>
+                </label>
+                <label id="labelFormTypeAtt" style="display:flex; align-items:flex-start; gap:10px; padding:12px; border:1px solid #cbd5e1; background:#fff; border-radius:8px; cursor:pointer;">
+                  <input type="radio" name="builderFormType" id="radioTypeAttendance" value="attendance" style="margin-top:3px;">
+                  <div>
+                    <div style="font-weight:700; font-size:0.9rem; color:var(--text-main);">📋 Attendance Form</div>
+                    <div style="font-size:0.78rem; color:var(--text-muted); margin-top:2px;">Fast session check-in with pre-filled hours & Thank You screen. No QR/pass.</div>
+                  </div>
+                </label>
               </div>
             </div>
 
-            <!-- Free Event Active Banner -->
-            <div id="freePricingNotice" style="background:#ecfdf5; border:1px solid #a7f3d0; border-radius:6px; padding:10px 14px; font-size:0.84rem; color:#065f46; font-weight:600; margin-bottom:16px; display:flex; align-items:center; gap:8px;">
-              <span>🟢</span>
-              <span>Free Event Active: Attendees register for free with instant digital entry pass.</span>
+            <!-- Attendance Active Settings Box (Shown when Attendance is chosen) -->
+            <div id="attendanceSettingsNotice" style="display:none; background:#ecfdf5; border:1px solid #a7f3d0; border-radius:8px; padding:14px; margin-bottom:18px;">
+              <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px;">
+                <div>
+                  <div style="font-weight:700; color:#065f46; font-size:0.9rem; display:flex; align-items:center; gap:6px;">
+                    <span>📋 Attendance Mode Active</span>
+                  </div>
+                  <div style="font-size:0.8rem; color:#047857; margin-top:2px;">
+                    Attendees mark attendance and see a Thank You note. No QR code or pass is generated.
+                  </div>
+                </div>
+                <div style="display:flex; align-items:center; gap:8px;">
+                  <label for="builderAttendanceHours" style="font-size:0.82rem; font-weight:700; color:#065f46; margin:0; white-space:nowrap;">
+                    Pre-filled Hours:
+                  </label>
+                  <input type="text" id="builderAttendanceHours" class="form-control" style="width:120px; padding:6px 10px; font-size:0.84rem; font-weight:700; text-align:center; background:#fff;" value="2 Hours" placeholder="e.g. 2 Hours">
+                </div>
+              </div>
             </div>
+
+            <!-- Wrapper for Registration Pricing Model (Hidden in Attendance Mode) -->
+            <div id="pricingConfigWrapper">
+              <!-- Event Pricing Model Toggle Bar -->
+              <div class="pricing-toggle-container">
+                <div class="pricing-toggle-label">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><path d="M12 6v12M8 10h8M8 14h6"></path></svg>
+                  <span>Event Pricing Model:</span>
+                </div>
+                <div class="segmented-control" id="pricingTypeToggle">
+                  <button type="button" class="segment-btn active" data-pricing="free" id="btnPricingFree">
+                    <span>🟢 Free Event</span>
+                  </button>
+                  <button type="button" class="segment-btn" data-pricing="paid" id="btnPricingPaid">
+                    <span>💳 Paid Event</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- Free Event Active Banner -->
+              <div id="freePricingNotice" style="background:#ecfdf5; border:1px solid #a7f3d0; border-radius:6px; padding:10px 14px; font-size:0.84rem; color:#065f46; font-weight:600; margin-bottom:16px; display:flex; align-items:center; gap:8px;">
+                <span>🟢</span>
+                <span>Free Event Active: Attendees register for free with instant digital entry pass.</span>
+              </div>
 
             <!-- Paid Event Configuration Box (Shown when Paid is selected) -->
             <div class="paid-settings-box" id="paidSettingsBox" style="display:none;">
@@ -193,6 +238,7 @@
                 </div>
               </div>
             </div>
+          </div>
 
             <div style="display:grid; grid-template-columns:2fr 1fr; gap:16px; margin-bottom:16px;">
               <div>
@@ -269,11 +315,8 @@
                    2-Minute Google Sheets Setup Guide (Click to expand)
                 </summary>
                 <div style="margin-top:8px; line-height:1.6; background:#fff; padding:12px; border-radius:6px; border:1px solid #e2e8f0;">
-                  1. Open <a href="https://sheets.new" target="_blank" style="text-decoration:underline; color:var(--primary);">sheets.new</a> to create a Google Sheet.<br>
-                  2. Go to <strong>Extensions &gt; Apps Script</strong>.<br>
-                  3. Paste the code from <code>google-apps-script/Code.gs</code> and click Save.<br>
-                  4. Click <strong>Deploy &gt; New deployment</strong> &gt; Select <strong>Web app</strong> &gt; Set <em>Who has access</em> to <strong>Anyone</strong>.<br>
-                  5. Copy the generated Web app URL and paste it into the box above!
+                  <strong>• For Registration Forms:</strong> Open <a href="https://sheets.new" target="_blank" style="text-decoration:underline; color:var(--primary);">sheets.new</a> &gt; Extensions &gt; Apps Script &gt; Paste <code>google-apps-script/Code.gs</code> &gt; Deploy as Web App.<br>
+                  <strong>• For Attendance Forms:</strong> Open a separate Google Sheet &gt; Extensions &gt; Apps Script &gt; Paste <code>google-apps-script/AttendanceCode.gs</code> &gt; Deploy as Web App &gt; Paste its URL above!
                 </div>
               </details>
             </div>
@@ -497,6 +540,15 @@
         builderDesc: document.getElementById('builderDesc'),
         builderBanner: document.getElementById('builderBanner'),
         builderSheetUrl: document.getElementById('builderSheetUrl'),
+        // Form Type
+        radioTypeRegistration: document.getElementById('radioTypeRegistration'),
+        radioTypeAttendance: document.getElementById('radioTypeAttendance'),
+        labelFormTypeReg: document.getElementById('labelFormTypeReg'),
+        labelFormTypeAtt: document.getElementById('labelFormTypeAtt'),
+        pricingConfigWrapper: document.getElementById('pricingConfigWrapper'),
+        attendanceSettingsNotice: document.getElementById('attendanceSettingsNotice'),
+        builderAttendanceHours: document.getElementById('builderAttendanceHours'),
+
         btnTestWebhook: document.getElementById('btnTestWebhook'),
         webhookTestResult: document.getElementById('webhookTestResult'),
         prebuiltChips: document.getElementById('prebuiltChips'),
@@ -526,6 +578,7 @@
         proofModalDownload: document.getElementById('proofModalDownload')
       };
 
+      let builderFormType = 'registration';
       let builderPricingType = 'free';
 
       // 1. Initial Authentication Check
@@ -639,15 +692,16 @@
           const formSubmissions = FormsStore.getSubmissions(f.id);
           const formUrl = FormsStore.getShareableUrl(f);
           const hasWebhook = Boolean(f.sheetWebhookUrl);
-          const isPaid = f.pricingType === 'paid' || (f.fee && !f.fee.includes('Free'));
+          const isAtt = f.formType === 'attendance';
+          const isPaid = !isAtt && (f.pricingType === 'paid' || (f.fee && !f.fee.includes('Free')));
 
           return `
             <div class="form-card" style="display:flex; flex-direction:column; justify-content:space-between;">
               <div>
                 <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; gap:6px;">
                   <div style="display:flex; align-items:center; gap:6px; flex-wrap:wrap;">
-                    <span class="pill-badge badge-info" style="font-size:0.75rem;">${escapeHtml(f.category || 'Campus Event')}</span>
-                    <span class="pill-badge ${isPaid ? 'badge-paid' : 'badge-free'}" style="font-size:0.75rem;">${escapeHtml(isPaid ? (f.fee || 'Paid') : '₹0 (Free Entry)')}</span>
+                    <span class="pill-badge badge-info" style="font-size:0.75rem;">${escapeHtml(f.category || (isAtt ? 'Session Attendance' : 'Campus Event'))}</span>
+                    ${isAtt ? '<span class="pill-badge" style="background:#fef3c7; color:#92400e; font-size:0.75rem;">📋 Attendance</span>' : `<span class="pill-badge ${isPaid ? 'badge-paid' : 'badge-free'}" style="font-size:0.75rem;">${escapeHtml(isPaid ? (f.fee || 'Paid') : '₹0 (Free Entry)')}</span>`}
                   </div>
                   <span style="font-size:0.75rem; color:${hasWebhook ? '#10b981' : '#f59e0b'}; font-weight:700;">
                     ${hasWebhook ? '● Sheets' : '○ Offline'}
@@ -660,7 +714,7 @@
                   ${escapeHtml((f.description || '').substring(0, 90))}...
                 </p>
                 <div style="font-size:0.8rem; color:var(--text-secondary); margin-bottom:14px;">
-                  DATE : ${escapeHtml(f.dateStr || 'Date TBD')} &nbsp;|&nbsp; COUNT : <strong>${formSubmissions.length}</strong> Registrations
+                  DATE : ${escapeHtml(f.dateStr || 'Date TBD')} &nbsp;|&nbsp; COUNT : <strong>${formSubmissions.length}</strong> ${isAtt ? 'Attended' : 'Registrations'}
                 </div>
               </div>
 
@@ -779,13 +833,24 @@
         }
         dom.builderTitle.value = form.title;
         dom.builderVenue.value = form.venue || '';
-        dom.builderCategory.value = form.category || 'Campus Event';
+        dom.builderCategory.value = form.category || (form.formType === 'attendance' ? 'Session Attendance' : 'Campus Event');
         dom.builderDate.value = form.dateStr || '';
         dom.builderTime.value = form.timeStr || '';
         dom.builderDesc.value = form.description || '';
         dom.builderBanner.value = form.bannerUrl || 'assets/images/AnoopAmbika (1).jpeg';
         renderAdminAssetBanners();
         dom.builderSheetUrl.value = form.sheetWebhookUrl || '';
+
+        // Form Type
+        const formType = form.formType || 'registration';
+        setBuilderFormType(formType, false);
+
+        if (formType === 'attendance') {
+          const hoursQ = (form.questions || []).find(q => q.title && q.title.toLowerCase().includes('hour'));
+          if (hoursQ && dom.builderAttendanceHours) {
+            dom.builderAttendanceHours.value = hoursQ.defaultValue || hoursQ.placeholder || '2 Hours';
+          }
+        }
 
         // Load pricing state
         const isPaid = form.pricingType === 'paid' || (form.fee && !form.fee.includes('Free'));
@@ -883,8 +948,11 @@
         dom.builderDesc.value = '';
         dom.builderBanner.value = 'assets/images/AnoopAmbika (1).jpeg';
         renderAdminAssetBanners();
-        dom.builderSheetUrl.value = 'https://script.google.com/macros/s/AKfycbwoz1ixKx1vD53R4imzimA48EuZZgCiMOUO2Vz1m8ABtpvh3Fm6MkZ_ilQiXFstzLYd/exec';
+        dom.builderSheetUrl.value = FormsStore.DEFAULT_WEBHOOK_URL;
         
+        // Reset to Registration Form mode by default
+        setBuilderFormType('registration', false);
+
         // Reset Pricing
         setBuilderPricingType('free');
         dom.builderFee.value = '₹0 (Free Entry)';
@@ -900,6 +968,96 @@
           { id: 'q_phone', title: 'Phone / WhatsApp Number', type: 'tel', required: true }
         ];
         renderBuilderQuestions();
+      }
+
+      // Form Type Controls
+      function setBuilderFormType(type, switchQuestions = false) {
+        builderFormType = type;
+        if (type === 'attendance') {
+          if (dom.radioTypeAttendance) dom.radioTypeAttendance.checked = true;
+          if (dom.labelFormTypeAtt) {
+            dom.labelFormTypeAtt.style.border = '2px solid var(--primary)';
+            dom.labelFormTypeAtt.style.background = '#eef2ff';
+          }
+          if (dom.labelFormTypeReg) {
+            dom.labelFormTypeReg.style.border = '1px solid #cbd5e1';
+            dom.labelFormTypeReg.style.background = '#fff';
+          }
+          if (dom.pricingConfigWrapper) dom.pricingConfigWrapper.style.display = 'none';
+          if (dom.attendanceSettingsNotice) dom.attendanceSettingsNotice.style.display = 'block';
+          if (!activeEditingFormId && !dom.builderTitle.value) {
+            dom.builderTitle.placeholder = 'e.g., AI Workshop Attendance';
+            dom.builderCategory.value = 'Session Attendance';
+          }
+          if (switchQuestions || (builderQuestions.length <= 3 && builderQuestions.some(q => q.id === 'q_name' || q.id === 'q_email'))) {
+            loadAttendanceDefaultQuestions();
+          }
+        } else {
+          if (dom.radioTypeRegistration) dom.radioTypeRegistration.checked = true;
+          if (dom.labelFormTypeReg) {
+            dom.labelFormTypeReg.style.border = '2px solid var(--primary)';
+            dom.labelFormTypeReg.style.background = '#eef2ff';
+          }
+          if (dom.labelFormTypeAtt) {
+            dom.labelFormTypeAtt.style.border = '1px solid #cbd5e1';
+            dom.labelFormTypeAtt.style.background = '#fff';
+          }
+          if (dom.pricingConfigWrapper) dom.pricingConfigWrapper.style.display = 'block';
+          if (dom.attendanceSettingsNotice) dom.attendanceSettingsNotice.style.display = 'none';
+          if (!activeEditingFormId && dom.builderCategory.value === 'Session Attendance') {
+            dom.builderCategory.value = 'Campus Event';
+          }
+          if (switchQuestions) {
+            builderQuestions = [
+              { id: 'q_name', title: 'Full Name', type: 'text', required: true },
+              { id: 'q_email', title: 'Email Address', type: 'email', required: true },
+              { id: 'q_phone', title: 'Phone / WhatsApp Number', type: 'tel', required: true }
+            ];
+            renderBuilderQuestions();
+          }
+        }
+        renderPrebuiltChips();
+      }
+
+      function loadAttendanceDefaultQuestions() {
+        const defaultHours = (dom.builderAttendanceHours && dom.builderAttendanceHours.value.trim()) || '2 Hours';
+        builderQuestions = [
+          { id: 'att_name', title: 'Full Name', type: 'text', placeholder: 'Enter attendee full name', required: true },
+          { id: 'att_semester', title: 'Semester', type: 'dropdown', options: ['S1', 'S2', 'S3', 'S4', 'S5', 'S6', 'S7', 'S8'], required: true },
+          { id: 'att_department', title: 'Department / Branch', type: 'dropdown', options: [
+            'CS1',
+            'CS2',
+            'EC1',
+            'EC2',
+            'EEE',
+            'CE',
+            'ME',
+            'IT',
+            'ECS',
+            'MBA',
+            'MCA'
+          ], required: true },
+          { id: 'att_roll', title: 'Roll Number', type: 'text', placeholder: 'e.g., 22CS091', required: true },
+          { id: 'att_hours', title: 'Hours', type: 'text', defaultValue: defaultHours, readonly: true, helpText: 'Pre-filled by organizer (Verified Session Duration)', required: true }
+        ];
+        renderBuilderQuestions();
+      }
+
+      if (dom.radioTypeRegistration) {
+        dom.radioTypeRegistration.addEventListener('change', () => setBuilderFormType('registration', true));
+      }
+      if (dom.radioTypeAttendance) {
+        dom.radioTypeAttendance.addEventListener('change', () => setBuilderFormType('attendance', true));
+      }
+      if (dom.builderAttendanceHours) {
+        dom.builderAttendanceHours.addEventListener('input', () => {
+          const val = dom.builderAttendanceHours.value.trim() || '2 Hours';
+          const hoursQ = builderQuestions.find(q => q.title && q.title.toLowerCase().includes('hour'));
+          if (hoursQ) {
+            hoursQ.defaultValue = val;
+            renderBuilderQuestions();
+          }
+        });
       }
 
       // Pricing Toggle Controls
@@ -979,7 +1137,15 @@
 
       // Render Prebuilt Questions Bar (Zoho / Google Forms style)
       function renderPrebuiltChips() {
-        const catalog = FormsStore.PREBUILT_TEMPLATES;
+        const isAtt = builderFormType === 'attendance';
+        const catalog = isAtt ? [
+          { id: "phone", title: "Phone / WhatsApp", type: "tel", placeholder: "e.g., 9876543210", required: false, category: "Contact" },
+          { id: "email", title: "Email Address", type: "email", placeholder: "e.g., rahul@example.com", required: false, category: "Contact" },
+          { id: "college", title: "College / Institute", type: "text", placeholder: "e.g., College Name", required: false, category: "Academic" },
+          { id: "year_of_study", title: "Year of Study", type: "single_select", options: ["1st Year", "2nd Year", "3rd Year", "Final Year"], required: false, category: "Academic" },
+          { id: "student_id_proof", title: "Student ID Photo", type: "file_upload", required: false, helpText: "Upload College ID photo", category: "Academic" }
+        ] : FormsStore.PREBUILT_TEMPLATES;
+
         dom.prebuiltChips.innerHTML = catalog.map(p => `
           <button type="button" class="chip-add-btn" onclick="addPrebuiltQuestion('${p.id}')">
             + ${p.title}
@@ -1023,7 +1189,14 @@
         dom.builderQuestionsList.innerHTML = builderQuestions.map((q, idx) => {
           const isChoice = q.type === 'single_select' || q.type === 'multiple_select' || q.type === 'dropdown';
           const isFileUpload = q.type === 'file_upload';
-          const optionsHtml = isChoice ? renderOptionsManager(q, idx) : (isFileUpload ? renderFileUploadManager(q, idx) : '');
+          const isReadonly = Boolean(q.readonly);
+          const defaultValInput = isReadonly ? `
+            <div style="margin-top:8px; display:flex; align-items:center; gap:8px; background:#f8fafc; padding:8px 12px; border-radius:6px; border:1px solid #e2e8f0;">
+              <span style="font-size:0.78rem; font-weight:700; color:#334155;">🔒 Pre-filled Value (Locked for Attendees):</span>
+              <input type="text" class="form-control" style="width:140px; font-size:0.82rem; padding:4px 8px; font-weight:700;" value="${escapeHtml(q.defaultValue || '')}" onchange="updateQuestionDefaultVal(${idx}, this.value)" placeholder="e.g. 2 Hours">
+            </div>
+          ` : '';
+          const optionsHtml = isChoice ? renderOptionsManager(q, idx) : (isFileUpload ? renderFileUploadManager(q, idx) : defaultValInput);
 
           return `
             <div class="builder-question-card" id="bqc_${idx}">
@@ -1101,6 +1274,12 @@
 
       window.updateQuestionTitle = (idx, val) => { builderQuestions[idx].title = val; };
       window.updateQuestionHelp = (idx, val) => { builderQuestions[idx].helpText = val; };
+      window.updateQuestionDefaultVal = (idx, val) => {
+        builderQuestions[idx].defaultValue = val;
+        if (builderQuestions[idx].title.toLowerCase().includes('hour') && dom.builderAttendanceHours) {
+          dom.builderAttendanceHours.value = val;
+        }
+      };
       window.updateQuestionType = (idx, type) => {
         builderQuestions[idx].type = type;
         if ((type === 'single_select' || type === 'multiple_select' || type === 'dropdown') && !builderQuestions[idx].options) {
@@ -1192,20 +1371,22 @@
         try {
           const rawId = dom.builderFormId.value.trim() || FormsStore.slugify(title) || `form-${Date.now()}`;
           const id = FormsStore.slugify(rawId) || rawId;
-          const isPaid = builderPricingType === 'paid';
-          const feeVal = isPaid ? (dom.builderFee.value.trim() || '₹99') : '₹0 (Free Entry)';
+          const isAtt = builderFormType === 'attendance';
+          const isPaid = !isAtt && builderPricingType === 'paid';
+          const feeVal = isAtt ? 'Attendance Form' : (isPaid ? (dom.builderFee.value.trim() || '₹99') : '₹0 (Free Entry)');
 
           const targetUrl = dom.builderSheetUrl.value.trim() || FormsStore.DEFAULT_WEBHOOK_URL;
 
           const formData = {
             id: id,
+            formType: builderFormType,
             title: title,
-            category: dom.builderCategory.value.trim() || 'Campus Event',
-            pricingType: builderPricingType,
+            category: dom.builderCategory.value.trim() || (isAtt ? 'Session Attendance' : 'Campus Event'),
+            pricingType: isAtt ? 'free' : builderPricingType,
             fee: feeVal,
-            upiId: dom.builderUpiId ? dom.builderUpiId.value.trim() : '',
-            paymentQr: dom.builderPaymentQr ? dom.builderPaymentQr.value.trim() : '',
-            paymentInstructions: dom.builderPaymentInstructions ? dom.builderPaymentInstructions.value.trim() : '',
+            upiId: isAtt ? '' : (dom.builderUpiId ? dom.builderUpiId.value.trim() : ''),
+            paymentQr: isAtt ? '' : (dom.builderPaymentQr ? dom.builderPaymentQr.value.trim() : ''),
+            paymentInstructions: isAtt ? '' : (dom.builderPaymentInstructions ? dom.builderPaymentInstructions.value.trim() : ''),
             venue: dom.builderVenue.value.trim() || 'Campus Venue',
             dateStr: dom.builderDate.value.trim() || 'Date TBD',
             timeStr: dom.builderTime.value.trim() || '09:00 AM',
@@ -1216,7 +1397,7 @@
           };
 
           await FormsStore.saveForm(formData);
-          showToast('✅ Form published & recorded in Google Sheets!');
+          showToast(isAtt ? '✅ Attendance Form published & synced!' : '✅ Registration Form published & synced!');
           dom.tabBtns[0].click(); // back to list
           renderFormsList();
           renderSubmissionsTable();
@@ -1285,6 +1466,10 @@
           }
 
           const attendeeName = item['Full Name'] || item['Name'] || Object.values(item)[6] || 'Attendee';
+          const attendeeId = item['Attendance ID'] || item['Booking ID'] || '-';
+          const emailOrRoll = item['Email Address'] || item['Email'] || (item['Roll Number / Student ID'] ? `Roll: ${item['Roll Number / Student ID']}` : '-');
+          const phoneOrDept = item['Phone / WhatsApp Number'] || item['Phone'] || [item['Semester'], item['Department / Branch'] || item['Department']].filter(Boolean).join(' ') || '-';
+
           const proofCell = proofVal ? `
             <button type="button" class="btn btn-secondary btn-sm" onclick="openProofModal('${encodeURIComponent(proofVal)}', '${escapeHtml(attendeeName)}')" style="font-size:0.75rem; padding:4px 8px; color:var(--primary); font-weight:700;">
               📷 View Proof
@@ -1293,10 +1478,10 @@
 
           return `
             <tr>
-              <td style="font-family:monospace; color:var(--primary); font-weight:700;">${item['Booking ID'] || '-'}</td>
+              <td style="font-family:monospace; color:var(--primary); font-weight:700;">${attendeeId}</td>
               <td style="font-weight:600;">${attendeeName}</td>
-              <td>${item['Email Address'] || item['Email'] || '-'}</td>
-              <td>${item['Phone / WhatsApp Number'] || item['Phone'] || '-'}</td>
+              <td>${emailOrRoll}</td>
+              <td>${phoneOrDept}</td>
               <td>${(item['Event Title'] || '').split(':')[0]}</td>
               <td>${proofCell}</td>
               <td style="color:var(--text-muted); font-size:0.78rem;">${item['Timestamp'] || '-'}</td>

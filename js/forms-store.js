@@ -138,6 +138,63 @@ const FormsStore = (function () {
     }
   ];
 
+  // Default Questions for Attendance Forms (Name, Semester, Department, Roll No, Hours)
+  const ATTENDANCE_DEFAULT_QUESTIONS = [
+    {
+      id: "att_name",
+      title: "Full Name",
+      type: "text",
+      placeholder: "Enter attendee's full name",
+      required: true,
+      category: "Contact"
+    },
+    {
+      id: "att_semester",
+      title: "Semester",
+      type: "dropdown",
+      options: ["S1", "S2", "S3", "S4", "S5", "S6", "S7", "S8"],
+      required: true,
+      category: "Academic"
+    },
+    {
+      id: "att_department",
+      title: "Department / Branch",
+      type: "dropdown",
+      options: [
+        "Computer Science & Engineering",
+        "Information Technology",
+        "AI & Data Science",
+        "Electronics & Communication (ECE)",
+        "Electrical & Electronics (EEE)",
+        "Mechanical Engineering",
+        "Civil Engineering",
+        "Management / MBA",
+        "Other"
+      ],
+      required: true,
+      category: "Academic"
+    },
+    {
+      id: "att_roll",
+      title: "Roll Number / Student ID",
+      type: "text",
+      placeholder: "e.g., 22CS091",
+      required: true,
+      category: "Academic"
+    },
+    {
+      id: "att_hours",
+      title: "Hours",
+      type: "text",
+      placeholder: "e.g., 2 Hours",
+      defaultValue: "2 Hours",
+      readonly: true,
+      helpText: "Pre-filled by organizer (Verified Session Duration)",
+      required: true,
+      category: "Attendance"
+    }
+  ];
+
   // Default initial forms (Clean & Empty for fresh setup)
   const INITIAL_FORMS = [];
 
@@ -220,9 +277,16 @@ const FormsStore = (function () {
   }
 
   async function saveForm(form, skipCloudSync = false) {
-    if (!form.category) form.category = 'Campus Event';
-    if (!form.pricingType) form.pricingType = 'free';
-    if (!form.fee) form.fee = form.pricingType === 'paid' ? '₹99' : '₹0 (Free Entry)';
+    if (!form.formType) form.formType = 'registration';
+    if (form.formType === 'attendance') {
+      if (!form.category) form.category = 'Session Attendance';
+      form.pricingType = 'free';
+      form.fee = 'Attendance Form';
+    } else {
+      if (!form.category) form.category = 'Campus Event';
+      if (!form.pricingType) form.pricingType = 'free';
+      if (!form.fee) form.fee = form.pricingType === 'paid' ? '₹99' : '₹0 (Free Entry)';
+    }
     if (form.paymentQr === undefined) form.paymentQr = '';
     if (form.paymentInstructions === undefined) form.paymentInstructions = '';
     // Always ensure the form uses the latest active webhook URL
@@ -265,6 +329,7 @@ const FormsStore = (function () {
       const compact = {
         t: form.title || ''
       };
+      if (form.formType && form.formType !== 'registration') compact.ft = form.formType;
       if (form.description) compact.ds = form.description;
       if (form.category && form.category !== 'Campus Event') compact.c = form.category;
       if (form.pricingType && form.pricingType !== 'free') compact.pt = form.pricingType;
@@ -282,16 +347,20 @@ const FormsStore = (function () {
           const type = q.type || 'text';
           const isChoice = ['single_select', 'multiple_select', 'dropdown'].includes(type);
           const item = [q.title || 'Question'];
-          if (type !== 'text' || q.required || (isChoice && q.options && q.options.length) || q.helpText) {
+          if (type !== 'text' || q.required || (isChoice && q.options && q.options.length) || q.helpText || q.defaultValue || q.readonly) {
             item.push(type === 'text' ? '' : type);
           }
-          if (q.required || (isChoice && q.options && q.options.length) || q.helpText) {
+          if (q.required || (isChoice && q.options && q.options.length) || q.helpText || q.defaultValue || q.readonly) {
             item.push(q.required ? 1 : 0);
           }
           if (isChoice && Array.isArray(q.options) && q.options.length > 0) {
             item.push(q.options);
-          } else if (q.helpText) {
-            item.push(q.helpText);
+          } else if (q.helpText || q.defaultValue || q.readonly) {
+            item.push(q.helpText || '');
+          }
+          if (q.defaultValue !== undefined || q.readonly) {
+            item.push(q.defaultValue || '');
+            item.push(q.readonly ? 1 : 0);
           }
           return item;
         });
@@ -330,11 +399,12 @@ const FormsStore = (function () {
       if (data.t && !data.title) {
         return {
           id: fallbackId || data.i || (`form-${Date.now()}`),
+          formType: data.ft || 'registration',
           title: data.t,
           description: data.ds || '',
-          category: data.c || 'Campus Event',
+          category: data.c || (data.ft === 'attendance' ? 'Session Attendance' : 'Campus Event'),
           pricingType: data.pt || 'free',
-          fee: data.f || (data.pt === 'paid' ? '₹99' : '₹0 (Free Entry)'),
+          fee: data.f || (data.pt === 'paid' ? '₹99' : (data.ft === 'attendance' ? 'Attendance Form' : '₹0 (Free Entry)')),
           paymentQr: data.qr || '',
           paymentInstructions: data.pi || '',
           venue: data.v || 'Campus Venue',
@@ -350,7 +420,9 @@ const FormsStore = (function () {
                 type: item[1] || 'text',
                 required: Boolean(item[2]),
                 options: Array.isArray(item[3]) ? item[3] : [],
-                helpText: typeof item[3] === 'string' ? item[3] : ''
+                helpText: typeof item[3] === 'string' ? item[3] : '',
+                defaultValue: typeof item[4] === 'string' ? item[4] : '',
+                readonly: Boolean(item[5])
               };
             }
             return item;
@@ -360,9 +432,10 @@ const FormsStore = (function () {
 
       // Support legacy schema
       if (data && data.title) {
-        if (!data.category) data.category = 'Campus Event';
+        if (!data.formType) data.formType = 'registration';
+        if (!data.category) data.category = data.formType === 'attendance' ? 'Session Attendance' : 'Campus Event';
         if (!data.pricingType) data.pricingType = 'free';
-        if (!data.fee) data.fee = '₹0 (Free Entry)';
+        if (!data.fee) data.fee = data.formType === 'attendance' ? 'Attendance Form' : '₹0 (Free Entry)';
         if (!data.sheetWebhookUrl) data.sheetWebhookUrl = DEFAULT_WEBHOOK_URL;
         if (!data.bannerUrl) data.bannerUrl = DEFAULT_BANNER_URL;
         return data;
@@ -560,14 +633,18 @@ const FormsStore = (function () {
   }
 
   async function recordSubmission(form, answers) {
-    const bookingId = `IEDC-${Math.random().toString(36).substring(2, 6).toUpperCase()}-${Math.floor(1000 + Math.random() * 9000)}`;
+    const isAttendance = Boolean(form && form.formType === 'attendance');
+    const idPrefix = isAttendance ? 'ATT' : 'IEDC';
+    const bookingId = `${idPrefix}-${Math.random().toString(36).substring(2, 6).toUpperCase()}-${Math.floor(1000 + Math.random() * 9000)}`;
     const timestamp = new Date().toLocaleString();
 
     // 1. Complete local record for offline backup & admin dashboard
     const record = {
       "Timestamp": timestamp,
       "Booking ID": bookingId,
+      "Attendance ID": bookingId,
       "Form ID": form.id,
+      "Form Type": form.formType || 'registration',
       "Event Title": form.title,
       ...answers
     };
@@ -581,11 +658,12 @@ const FormsStore = (function () {
     }
 
     // 2. Prepare payload for Google Sheets:
-    // ONLY contains Timestamp, Booking ID, and the exact question titles created in this form!
+    // Contains Timestamp, Booking ID, Attendance ID, and the exact question titles created in this form!
     const sheetPayload = {
       "_eventTitle": form.title, // Internal routing parameter for tab naming (not added as a column)
       "Timestamp": timestamp,
-      "Booking ID": bookingId
+      "Booking ID": bookingId,
+      "Attendance ID": bookingId
     };
 
     // Add questions in the exact order created in the form
@@ -651,7 +729,8 @@ const FormsStore = (function () {
     AVAILABLE_BANNER_ASSETS,
     DEFAULT_BANNER_URL,
     DEFAULT_WEBHOOK_URL,
-    PREBUILT_TEMPLATES
+    PREBUILT_TEMPLATES,
+    ATTENDANCE_DEFAULT_QUESTIONS
   };
 })();
 
