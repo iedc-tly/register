@@ -160,17 +160,7 @@ const FormsStore = (function () {
       id: "att_department",
       title: "Department / Branch",
       type: "dropdown",
-      options: [
-        "Computer Science & Engineering",
-        "Information Technology",
-        "AI & Data Science",
-        "Electronics & Communication (ECE)",
-        "Electrical & Electronics (EEE)",
-        "Mechanical Engineering",
-        "Civil Engineering",
-        "Management / MBA",
-        "Other"
-      ],
+      options: ['CS1','CS2','EC1','IT','EC2','EEE','CE','ME','ECS','MBA','other'],
       required: true,
       category: "Academic"
     },
@@ -178,7 +168,7 @@ const FormsStore = (function () {
       id: "att_roll",
       title: "Roll Number / Student ID",
       type: "text",
-      placeholder: "e.g., 22CS091",
+      placeholder: "e.g., 42",
       required: true,
       category: "Academic"
     },

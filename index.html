@@ -562,11 +562,11 @@
           }
           // Paragraph / Textarea
           else if (q.type === 'paragraph' || q.type === 'textarea') {
-            html += `<textarea class="form-control" id="${fieldId}" name="${escapeHtml(q.title)}" placeholder="${escapeHtml(q.placeholder || 'Your answer...')}" ${isReq ? 'required' : ''}></textarea>`;
+            html += `<textarea class="form-control" id="${fieldId}" name="${escapeHtml(q.title)}" placeholder="${escapeHtml(q.placeholder === 'e.g., 22CS091' ? 'e.g., 42' : (q.placeholder || 'Your answer...'))}" ${isReq ? 'required' : ''}></textarea>`;
           }
           // Email
           else if (q.type === 'email') {
-            html += `<input type="email" class="form-control" id="${fieldId}" name="${escapeHtml(q.title)}" placeholder="${escapeHtml(q.placeholder || 'example@gmail.com')}" ${isReq ? 'required' : ''}>`;
+            html += `<input type="email" class="form-control" id="${fieldId}" name="${escapeHtml(q.title)}" placeholder="${escapeHtml(q.placeholder || 'Savanth@gmail.com')}" ${isReq ? 'required' : ''}>`;
           }
           // Tel
           else if (q.type === 'tel') {
@@ -574,7 +574,7 @@
           }
           // Standard Short Text
           else {
-            html += `<input type="text" class="form-control" id="${fieldId}" name="${escapeHtml(q.title)}" value="${escapeHtml(defaultVal)}" placeholder="${escapeHtml(q.placeholder || 'Your answer...')}" ${roAttr} ${isReq ? 'required' : ''}>`;
+            html += `<input type="text" class="form-control" id="${fieldId}" name="${escapeHtml(q.title)}" value="${escapeHtml(defaultVal)}" placeholder="${escapeHtml(q.placeholder === 'e.g., 22CS091' ? 'e.g., 42' : (q.placeholder || 'Your answer...'))}" ${roAttr} ${isReq ? 'required' : ''}>`;
           }
 
           html += `</div>`;
