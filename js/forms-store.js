@@ -17,7 +17,7 @@ const FormsStore = (function () {
       id: "full_name",
       title: "Full Name",
       type: "text",
-      placeholder: "e.g., Rahul Sharma",
+      placeholder: "e.g., Savanth S Joy",
       required: true,
       category: "Contact"
     },
@@ -25,7 +25,7 @@ const FormsStore = (function () {
       id: "email",
       title: "Email Address",
       type: "email",
-      placeholder: "e.g., rahul@example.com",
+      placeholder: "e.g., savanth@gmail.com",
       required: true,
       helpText: "Your registration pass will be delivered to this email",
       category: "Contact"
@@ -42,7 +42,7 @@ const FormsStore = (function () {
       id: "college",
       title: "College / University Name",
       type: "text",
-      placeholder: "e.g., National Institute of Technology",
+      placeholder: "e.g. College of Engineering Thalassery",
       required: true,
       category: "Academic"
     },
@@ -68,7 +68,7 @@ const FormsStore = (function () {
       id: "year_of_study",
       title: "Year of Study",
       type: "single_select", // Radio
-      options: ["1st Year", "2nd Year", "3rd Year", "Final Year", "Postgraduate"],
+      options: ["S1","S2", "S3", "S4", "S5", "S6", "S7", "S8"],
       required: true,
       category: "Academic"
     },
@@ -76,7 +76,7 @@ const FormsStore = (function () {
       id: "student_id",
       title: "Roll Number / Student ID",
       type: "text",
-      placeholder: "e.g., 22CS091",
+      placeholder: "e.g., 42",
       required: false,
       category: "Academic"
     },
