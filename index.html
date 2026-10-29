@@ -36,7 +36,7 @@
                 <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"></line><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"></line></svg>
                 <span>Share</span>
               </button>
-              <span class="pill-badge badge-free" id="formPricingBadge">₹0 (Free Entry)</span>
+              
             </div>
             <h1 class="form-title" id="formTitle">Loading Event Form...</h1>
             <p class="form-description" id="formDesc"></p>
@@ -429,15 +429,15 @@
       dom.formVenueText.textContent = currentForm.venue || 'Venue TBD';
 
       if (isAttendance) {
-        dom.formPricingBadge.className = 'pill-badge badge-free';
+        if (dom.formPricingBadge) dom.formPricingBadge.className = 'pill-badge badge-free';
         if (dom.submitFeeAmount) dom.submitFeeAmount.textContent = 'Student Check-in';
         if (dom.submitFeeSub) dom.submitFeeSub.textContent = 'Verified Session Attendance';
         if (dom.submitBtnText) dom.submitBtnText.textContent = 'Mark Attendance';
         if (dom.paymentNoticeCard) dom.paymentNoticeCard.style.display = 'none';
       } else if (isPaid) {
         const feeStr = currentForm.fee || 'Paid Event';
-        dom.formPricingBadge.className = 'pill-badge badge-paid';
-        dom.formPricingBadge.textContent = feeStr;
+        if (dom.formPricingBadge) dom.formPricingBadge.className = 'pill-badge badge-paid';
+        if (dom.formPricingBadge) dom.formPricingBadge.textContent = feeStr;
         if (dom.submitFeeAmount) dom.submitFeeAmount.textContent = feeStr;
         if (dom.submitFeeSub) dom.submitFeeSub.textContent = 'Payment proof required';
         if (dom.submitBtnText) dom.submitBtnText.textContent = 'Submit Registration & Proof';
@@ -463,8 +463,8 @@
           }
         }
       } else {
-        dom.formPricingBadge.className = 'pill-badge badge-free';
-        dom.formPricingBadge.textContent = '₹0 (Free Entry)';
+        if (dom.formPricingBadge) dom.formPricingBadge.className = 'pill-badge badge-free';
+        if (dom.formPricingBadge) dom.formPricingBadge.textContent = '₹0 (Free Entry)';
         if (dom.submitFeeAmount) dom.submitFeeAmount.textContent = '₹0 (Free Entry)';
         if (dom.submitFeeSub) dom.submitFeeSub.textContent = 'Instant digital pass';
         if (dom.submitBtnText) dom.submitBtnText.textContent = 'Submit Registration';
